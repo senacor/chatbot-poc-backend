@@ -1,10 +1,7 @@
-import "dotenv/config";
-import express, { Request, Response } from "express";
-import cors from "cors";
+import express from "express";
 import { chatRouter } from "./chat/index.js";
-
-const app = express();
-const port = process.env["PORT"] || 3000;
+import { app } from "./app.js";
+import cors from "cors";
 
 
 const corsOptions = {
@@ -14,13 +11,8 @@ const corsOptions = {
 
 app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
+
+
 app.use(express.json());
 
 app.use('/chat', chatRouter);
-app.get("/", (_: Request, response: Response) => {
-    response.status(200).json({message: "Hello World, running in Container"});
-})
-
-app.listen(port, () =>{
-    console.log(`Server is running at http://localhost:${port}`);
-})

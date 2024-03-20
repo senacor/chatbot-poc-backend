@@ -2,12 +2,12 @@
   "name": "chatbot-poc-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./dist/app.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --exec node --loader ts-node/esm src/index.ts",
+    "dev": "nodemon -r dotenv/config --exec node --loader ts-node/esm src/app.ts",
     "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node dist/index.js"
+    "start": "npm run build && node dist/app.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "officeparser": "^4.0.8",
-    "openai": "^4.29.2"
+    "openai": "^4.29.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.3",
