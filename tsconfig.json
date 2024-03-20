@@ -1,0 +1,12 @@
+{
+    "extends": "@tsconfig/strictest/tsconfig.json",
+    "compilerOptions": {
+      "exactOptionalPropertyTypes": false,                      
+      "module": "ESNext",   
+      "moduleResolution": "Node",     
+      "target": "ESNext",                 
+      "rootDir": "./src",                               
+      "outDir": "./dist",                                 
+    }
+  }
+  
