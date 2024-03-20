@@ -1,0 +1,39 @@
+{
+  "name": "chatbot-poc-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config --exec node --loader ts-node/esm src/index.ts",
+    "build": "rimraf ./dist && tsc",
+    "start": "npm run build && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/senacor/chatbot-poc-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/senacor/chatbot-poc-backend/issues"
+  },
+  "homepage": "https://github.com/senacor/chatbot-poc-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "officeparser": "^4.0.8",
+    "openai": "^4.29.2"
+  },
+  "devDependencies": {
+    "@tsconfig/strictest": "^2.0.3",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.30",
+    "nodemon": "^3.1.0",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  }
+}
