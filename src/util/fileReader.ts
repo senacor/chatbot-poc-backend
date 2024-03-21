@@ -1,35 +1,51 @@
 //@ts-ignore
 import officeParser from 'officeparser';
+import { z } from 'zod';
 
-export const fileReader = async (fileName:string): Promise<{data: string, error: undefined} | {data: undefined, error: Error}> => {
+const FileReaderSuccess = z.object({
+    content: z.string(),
+    error: z.undefined()
+});
+
+const FileReaderError = z.object({
+    content: z.undefined(),
+    error: z.string(),
+})
+
+export type FileReaderSuccess = z.infer<typeof FileReaderSuccess>;
+export type FileReaderError = z.infer<typeof FileReaderError>;
+
+const stringParser = z.string();
+
+export const fileReader = async (fileName:string): Promise<FileReaderSuccess | FileReaderError> => {
     try{
         const data = await officeParser.parseOfficeAsync(`${process.cwd()}/prompts/${fileName}`);
-        if(!data){
-            throw Error('File read but no prompt data found');
+        const validatedData = stringParser.safeParse(data);
+        if(!validatedData.success){
+            return {
+                content: undefined,
+                error: `Error reading the file ${fileName}.\n${validatedData.error.message}`,
+            };
         }
         return {
-            data,
+            content: data,
             error: undefined
         };
     }
     catch(error){
         if(error instanceof Error){
             return {
-                data: undefined,
-                error
+                content: undefined,
+                error: `Unexpected error reading the file ${fileName}.\n${error.stack}`,
             };
         }
-        console.log(error);
         return {
-            data: undefined,
-            error: new Error(`Something went wrong reading the prompt file. Original error: ${error}`)
+            content: undefined,
+            error: `Unexpected error reading prompt file ${fileName}`,
         };
     }
 }
 
-
-export const hasErrors = (
-    fileObj: {data: string, error: undefined} | {data: undefined, error: Error}
-    ): fileObj is {data: undefined, error: Error} => {
-        return fileObj.error !== undefined
+export const parseFileReaderResponse = (data: FileReaderSuccess | FileReaderError): data is FileReaderSuccess => {
+    return FileReaderSuccess.safeParse(data).success;
 }
