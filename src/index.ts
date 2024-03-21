@@ -9,10 +9,13 @@ const corsOptions = {
     optionsSuccessStatus: 204
 }
 
-app.options('*', cors(corsOptions));
-app.use(cors(corsOptions));
+export const registerRoutes = () => {
+    app.options('*', cors(corsOptions));
+    app.use(cors(corsOptions));
+    
+    
+    app.use(express.json());
+    
+    app.use('/chat', chatRouter);
+}
 
-
-app.use(express.json());
-
-app.use('/chat', chatRouter);
