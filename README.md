@@ -13,10 +13,12 @@ docker compose up
 
 ## How to change the context Prompt
 
-Currently the context prompt is provided by a Word Document in the `prompts/` Folder.
+Currently the context prompt is provided by a Word Document in the [prompts/](./prompts/) Folder.
 Upload or replace a new Word File, parseable formats are:
 ```
  docx, pptx, xlsx, odt, odp, ods, pdf
 ```
 
-For more information see [npm officeparser](https://www.npmjs.com/package/officeparser) and the [fileReader implementation](./src/util/fileReader.ts)
+Remember to update the name in [index.ts](./src/chat/index.ts).
+
+For more information on the parser see [npm officeparser](https://www.npmjs.com/package/officeparser).
