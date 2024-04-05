@@ -7,6 +7,12 @@
       "target": "ESNext",                 
       "rootDir": "./src",                               
       "outDir": "./dist",                                 
-    }
+    },
+    "ts-node": {
+      "experimentalSpecifierResolution": "node",
+      "transpileOnly": true,
+      "esm": true,
+    },
+  
   }
   

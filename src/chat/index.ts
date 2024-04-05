@@ -8,7 +8,7 @@ import { newMessage } from "./post-new-message.js";
 /**
  * Change the prompt file, the model or the response format here
  */
-const PROMPT_FILE_NAME = "Chatbot Qonto.docx"
+const PROMPT_FILE_NAME = "Prompt_Baufinanzierung.docx"
 const OPENAI_MODEL: ChatCompletionCreateParamsBase["model"] = "gpt-3.5-turbo";
 const RESPONSE_FORMAT: ChatCompletionCreateParams.ResponseFormat = {type: "text"};
 

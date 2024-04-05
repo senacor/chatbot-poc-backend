@@ -52,8 +52,12 @@ export const init = makeGetEndpoint(z.any(), async (_request, response) => {
             content: jsonPrompt?.content !== undefined ? jsonPrompt.content : ""
         },
         {
+            role: 'system',
+            content: "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous. Do not call functions until all arguments are provided by the user."
+        },
+        {
             role: "assistant",
-            content: "Hi, ich bin der virtuelle Assistent von Qonto und kann alles rund um Qonto und unsere Leistungen beantworten. Bitte fragen Sie mich etwas"
+            content: "Hallo! Als virtueller Assistent beantworte ich gerne Ihre Fragen rund um die Baufinanzierung und helfe Ihnen bei der Berechnung der Kreditsumme anhand des Zeitpunkts und der Höhe der monatlichen Rate bzw. der Kreditlaufzeit anhand der Höhe und der Höhe der monatlichen Rate."
         }
     ]);
 });
