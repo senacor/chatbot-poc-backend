@@ -47,11 +47,11 @@ name: Build and Deploy to Cloud Run
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "loan-assistant" ]
 env:
   PROJECT_ID: genuine-wording-417014 # TODO: update Google Cloud project id
   GAR_LOCATION: europe-west3 # TODO: update Artifact Registry location
-  SERVICE: chatbot-backend # TODO: update Cloud Run service name
+  SERVICE: loan-chatbot-backend # TODO: update Cloud Run service name
   REGION: europe-west3 # TODO: update Cloud Run service region
 
 jobs:
