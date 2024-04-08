@@ -68,7 +68,7 @@ const processMessages = async (messages: ChatCompletionMessageParam[], response:
         const msgs = messages.concat([chatResponse.message, ...toolCalls]);
         processMessages(msgs, response)
     } else {
-        //console.log(chatResponse);
+        console.log(chatResponse);
         if(!chatResponse){
             return response.status(500).send("Got no response from the bot");
         }
