@@ -55,7 +55,7 @@ const tools: ChatFunction = {
                     properties: {
                         time: {
                             type: 'number',
-                            description: 'Time of the loan',
+                            description: 'Time of the loan in years',
                         },
                         monthlyInstallment: {
                             type: 'number',
