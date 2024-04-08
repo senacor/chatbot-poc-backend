@@ -53,7 +53,7 @@ export const init = makeGetEndpoint(z.any(), async (_request, response) => {
         },
         {
             role: 'system',
-            content: "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous. Do not call functions until all arguments are provided by the user."
+            content: "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous. Do not call functions until all arguments are provided by the user. Include all arguments in the response."
         },
         {
             role: "assistant",

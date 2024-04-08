@@ -1,6 +1,6 @@
 import { ChatCompletionTool } from "openai/resources";
-import calculateLoanTermInYears from "../calculations/loanTerm.js";
-import calculateLoanAmount from "../calculations/loanAmount.js";
+import calculateLoanTimeInYears from "../calculations/loanTime.js";
+import calculateLoanPrincipal from "../calculations/loanPrincipal.js";
 
 interface ChatFunction {
     [name: string]: {
@@ -11,31 +11,31 @@ interface ChatFunction {
 
 const tools: ChatFunction = {
     calculateLoanTerm: {
-        fn: calculateLoanTermInYears,
+        fn: calculateLoanTimeInYears,
         definition: {
             type: 'function',
             function: {
                 name: 'calculateLoanTerm',
-                description: 'Calculates loan term (in years) based on the given loan amount, interest rate and monthly rate.',
+                description: 'Calculates loan term (in years) based on the given loan amount, interest rate and monthly installment.',
                 parameters: {
                     type: 'object',
                     properties: {
-                        amount: {
+                        principal: {
                             type: 'number',
-                            description: 'Total amount of the loan in euro (€)',
+                            description: 'Principal of the loan in euro (€)',
                         },
-                        monthlyRate: {
+                        monthlyInstallment: {
                             type: 'number',
-                            description: 'Monthly annuity rate in euro (€)',
+                            description: 'Monthly installment in euro (€)',
                         },
                         interestRate: {
                             type: 'number',
-                            description: 'Interest rate estimated by the bank, for example 3,2',
+                            description: 'Interest rate estimated by the bank, default value is 3,2',
                         }
                     },
                     required: [
-                        'amount',
-                        'monthlyRate',
+                        'principal',
+                        'monthlyInstallment',
                         'interestRate'
                     ]
                     
@@ -43,32 +43,32 @@ const tools: ChatFunction = {
             },
         }
     },
-    calculateLoanAmount: {
-        fn: calculateLoanAmount,
+    calculateLoanPrincipal: {
+        fn: calculateLoanPrincipal,
         definition: {
             type: 'function',
             function: {
-                name: 'calculateLoanAmount',
-                description: 'Calculate loan amount based on the given monthly rate, transit time and interest rate.',
+                name: 'calculateLoanPrincipal',
+                description: 'Calculate loan principal based on the given monthly installment, time and interest rate.',
                 parameters: {
                     type: 'object',
                     properties: {
-                        transitTime: {
+                        time: {
                             type: 'number',
-                            description: 'Transit time of the loan',
+                            description: 'Time of the loan',
                         },
-                        monthlyRate: {
+                        monthlyInstallment: {
                             type: 'number',
-                            description: 'Monthly rate in euro (€)',
+                            description: 'Monthly installment in euro (€)',
                         },
                         interestRate: {
                             type: 'number',
-                            description: 'Interest rate estimated by the bank, for example 3,2',
+                            description: 'Interest rate estimated by the bank, default value is 3,2',
                         }   
                     },
                     required: [
-                        'transitTime',
-                        'monthlyRate',
+                        'time',
+                        'monthlyInstallment',
                         'interestRate',
                     ]
                 }
