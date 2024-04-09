@@ -1,7 +1,7 @@
 import formidable from 'formidable';
 import { IncomingMessage } from 'http';
 import fs from 'node:fs/promises';
-import { fileReader } from '../util/fileReader';
+import { fileReader } from '../util/fileReader.js';
 
 const fileUpload = async (request: IncomingMessage, response: any) => {
     let file: formidable.File | null = null;
