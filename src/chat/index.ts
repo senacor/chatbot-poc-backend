@@ -4,6 +4,7 @@ import OpenAI from "openai";
 import { ChatCompletionCreateParams, ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.js";
 import { init } from "./get-init.js";
 import { newMessage } from "./post-new-message.js";
+import fileUpload from "./upload-file.js";
 
 /**
  * Change the prompt file, the model or the response format here
@@ -21,6 +22,7 @@ chatRouter.post('/newMessage', newMessage);
 chatRouter.get("/test")
 
 chatRouter.get('/init', init);
+chatRouter.post('/fileUpload', fileUpload)
 
 
 export { 

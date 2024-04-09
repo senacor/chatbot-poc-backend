@@ -5,7 +5,7 @@ import cors from "cors";
 
 
 const corsOptions = {
-    origin: ["http://localhost:4200", "https://loan-chatbot-frontend-csf37hag2a-ey.a.run.app"],
+    origin: ["http://localhost:4200", "https://file-chatbot-frontend-csf37hag2a-ey.a.run.app"],
     optionsSuccessStatus: 204
 }
 

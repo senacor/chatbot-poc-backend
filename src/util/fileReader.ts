@@ -17,9 +17,9 @@ export type FileReaderError = z.infer<typeof FileReaderError>;
 
 const stringParser = z.string();
 
-export const fileReader = async (fileName:string): Promise<FileReaderSuccess | FileReaderError> => {
+export const fileReader = async (fileName:string, isPath?: boolean): Promise<FileReaderSuccess | FileReaderError> => {
     try{
-        const data = await officeParser.parseOfficeAsync(`${process.cwd()}/prompts/${fileName}`);
+        const data = await officeParser.parseOfficeAsync(isPath ? fileName : `${process.cwd()}/prompts/${fileName}`);
         const validatedData = stringParser.safeParse(data);
         if(!validatedData.success){
             return {
@@ -33,6 +33,7 @@ export const fileReader = async (fileName:string): Promise<FileReaderSuccess | F
         };
     }
     catch(error){
+        console.error(error);
         if(error instanceof Error){
             return {
                 content: undefined,
