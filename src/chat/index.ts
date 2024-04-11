@@ -12,6 +12,7 @@ import fileUpload from "./upload-file.js";
 const PROMPT_FILE_NAME = "Prompt_Baufinanzierung.docx"
 const OPENAI_MODEL: ChatCompletionCreateParamsBase["model"] = "gpt-3.5-turbo";
 const RESPONSE_FORMAT: ChatCompletionCreateParams.ResponseFormat = {type: "text"};
+const IDENTITY_HEADER = 'X-Identity';
 
 
 const chatRouter = express.Router();
@@ -29,6 +30,7 @@ export {
     PROMPT_FILE_NAME, 
     OPENAI_MODEL,
     RESPONSE_FORMAT,
+    IDENTITY_HEADER,
     chatRouter,
     openai,
 }
