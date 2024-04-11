@@ -1,20 +1,18 @@
 import { z } from "zod";
 import { makePostEndpoint } from "../middleware/validation/makePostEndpoint.js";
-import { OPENAI_MODEL, RESPONSE_FORMAT, openai } from "./index.js";
+import { IDENTITY_HEADER, OPENAI_MODEL, RESPONSE_FORMAT, openai } from "./index.js";
 import tools from "./tools.js";
 import {ChatCompletionMessageParam, ChatCompletionTool, ChatCompletionToolMessageParam } from "openai/resources/index.js";
+import { addMessage, addMessages, getMessages, getUserVisibleMessages } from "../util/messageStore.js";
 
 const ChatCompletionRole = z.union([z.literal('user'), z.literal('system'), z.literal('assistant')]);
 export type ChatCompletionRole = z.infer<typeof ChatCompletionRole>;
 
-const MessageHistory = z.object({
-    messages: z.array(
+const MessageHistory = 
         z.object({
             role: ChatCompletionRole,
             content: z.string(),
-        })
-    ).nonempty()
-});
+        });
 type MessageHistory = z.infer<typeof MessageHistory>;
 
 const makeApiRequest = async (messages: ChatCompletionMessageParam[]) => {
@@ -33,9 +31,13 @@ const validateArguments = (args: any, definition?: ChatCompletionTool) => {
         ?.find(value => value == null || typeof value !== 'number');
 }
 
-const processMessages = async (messages: ChatCompletionMessageParam[], response: any) => {
+const processMessages = async (messages: ChatCompletionMessageParam[], response: any, identity: string) => {
     const completion = await makeApiRequest(messages);
     const chatResponse = completion.choices[0];
+    if(!chatResponse){
+        return response.status(500).send("Got no response from the bot");
+    }
+    addMessage(identity, chatResponse.message);
     if (chatResponse?.finish_reason === 'tool_calls') {
         const toolCalls: ChatCompletionToolMessageParam[] = chatResponse.message.tool_calls?.map(call => {
             let content: string;
@@ -65,18 +67,22 @@ const processMessages = async (messages: ChatCompletionMessageParam[], response:
                 tool_call_id: call.id,
             })
         }) ?? [];
-        const msgs = messages.concat([chatResponse.message, ...toolCalls]);
-        processMessages(msgs, response)
+        addMessages(identity, toolCalls);
+        processMessages(getMessages(identity) ?? [], response, identity)
     } else {
         console.log(chatResponse);
-        if(!chatResponse){
-            return response.status(500).send("Got no response from the bot");
-        }
-        return response.status(200).send(chatResponse.message);
+        
+        return response.status(200).send(getUserVisibleMessages(identity));
     }
 }
 
 export const newMessage = makePostEndpoint(MessageHistory, async (request, response) => {
-    const messages = request.body.messages;
-    processMessages(messages, response);
+    const message = request.body;
+    const identity = request.header(IDENTITY_HEADER);
+    if (!identity) {
+        return response.status(400).send(`Missing ${IDENTITY_HEADER} header.`)
+    }
+    addMessage(identity, message);
+    const messages = getMessages(identity) ?? []; //TODO handle no messages
+    processMessages(messages, response, identity);
 });
