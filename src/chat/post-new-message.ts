@@ -84,5 +84,5 @@ export const newMessage = makePostEndpoint(MessageHistory, async (request, respo
     }
     addMessage(identity, message);
     const messages = getMessages(identity) ?? []; //TODO handle no messages
-    processMessages(messages, response, identity);
+    return processMessages(messages, response, identity);
 });

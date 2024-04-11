@@ -2,7 +2,7 @@ import { z } from "zod";
 import { makeGetEndpoint } from "../middleware/validation/makeGetEndpoint.js";
 import { fileReader, parseFileReaderResponse } from "../util/fileReader.js";
 import { IDENTITY_HEADER, OPENAI_MODEL, PROMPT_FILE_NAME, RESPONSE_FORMAT, openai } from "./index.js";
-import { addMessages, getMessages, getUserVisibleMessages } from "../util/messageStore.js";
+import { addMessages, getUserVisibleMessages } from "../util/messageStore.js";
 
 //TODO: Rework type inference of fileReader
 export const init = makeGetEndpoint(z.any(), async (_request, response) => {
