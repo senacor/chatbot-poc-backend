@@ -44,7 +44,7 @@ const fileUpload = async (request: any, response: any) => {
                 {
                     role: 'system',
                     content: `You are a helpful assistant designed to answer 
-                    questions only about the following content of the file named "${file.originalFilename}" which is following:\n${fileContent}`
+                    questions only about the content of the file named "${file.originalFilename}", which is following:\n${fileContent}`
                 },
                 {
                     role: 'assistant',
