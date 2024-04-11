@@ -37,6 +37,9 @@ const processMessages = async (messages: ChatCompletionMessageParam[], response:
 
 export const newMessage = makePostEndpoint(MessageHistory, async (request, response) => {
     const message = request.body;
+    console.log({
+        message: message,
+    });
     const identity = request.header(IDENTITY_HEADER);
     if (!identity) {
         return response.status(400).send(`Missing ${IDENTITY_HEADER} header.`)
