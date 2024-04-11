@@ -1,9 +1,16 @@
 import formidable from 'formidable';
-import { IncomingMessage } from 'http';
 import fs from 'node:fs/promises';
 import { fileReader } from '../util/fileReader.js';
+import { IDENTITY_HEADER } from './index.js';
+import { addMessages, getMessages } from '../util/messageStore.js';
+import { ChatCompletionMessageParam } from 'openai/resources/index.js';
 
-const fileUpload = async (request: IncomingMessage, response: any) => {
+
+const fileUpload = async (request: any, response: any) => {
+    const identity = request.header(IDENTITY_HEADER);
+    if (!identity) {
+        return response.status(400).send(`Missing ${IDENTITY_HEADER} header.`)
+    }
     let file: formidable.File | null = null;
     let fileContent: string | null = null;
     try {
@@ -19,22 +26,32 @@ const fileUpload = async (request: IncomingMessage, response: any) => {
         }
         console.log(`File created ${file.filepath}`);
         switch(file.mimetype) {
-            case 'text/plain':
+            case 'text/plain': //txt
                 fileContent = await fs.readFile(file.filepath, {encoding: 'utf-8'});
                 break;
-            case 'application/msword':
-            case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            case 'application/msword': //doc
+            case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': //docx
                 const fileConversionResult = await fileReader(file.filepath, true);
                 fileContent = fileConversionResult.content ?? null;
                 if (fileConversionResult.error) {
                     console.error(fileConversionResult.error);
                 }
-                console.log(fileConversionResult);
                 break;
             default:
                 throw (`Unsupported file type: ${file?.mimetype}`);
         }
         if (fileContent) {
+            addMessages(identity, [
+                {
+                    role: 'system',
+                    content: `You are a helpful assistant designed to answer 
+                    questions only about the following content of the file named "${file.originalFilename}" which is following:\n${fileContent}`
+                },
+                {
+                    role: 'assistant',
+                    content: `Lassen Sie uns über die von Ihnen bereitgestellte Datei „${file.originalFilename}“ sprechen. Was möchten Sie wissen?` 
+                },
+            ]);
             return response.status(200).send({
                 content: fileContent,
                 name: file.originalFilename,

@@ -10,7 +10,7 @@ import fileUpload from "./upload-file.js";
  * Change the prompt file, the model or the response format here
  */
 const PROMPT_FILE_NAME = "Prompt_Baufinanzierung.docx"
-const OPENAI_MODEL: ChatCompletionCreateParamsBase["model"] = "gpt-3.5-turbo";
+const OPENAI_MODEL: ChatCompletionCreateParamsBase["model"] = "gpt-4-turbo";//"gpt-3.5-turbo";
 const RESPONSE_FORMAT: ChatCompletionCreateParams.ResponseFormat = {type: "text"};
 const IDENTITY_HEADER = 'X-Identity';
 
