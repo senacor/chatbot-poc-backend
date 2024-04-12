@@ -2,7 +2,7 @@ import formidable from 'formidable';
 import fs from 'node:fs/promises';
 import { fileReader } from '../util/fileReader.js';
 import { IDENTITY_HEADER } from './index.js';
-import { addMessages, getMessages } from '../util/messageStore.js';
+import { addMessages } from '../util/messageStore.js';
 
 
 const fileUpload = async (request: any, response: any) => {
