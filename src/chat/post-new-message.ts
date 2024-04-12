@@ -31,9 +31,7 @@ const processMessages = async (messages: ChatCompletionMessageParam[], response:
     }
     addMessage(identity, chatResponse.message);
     return response.status(200).send(getUserVisibleMessages(identity));
-
 }
-
 
 export const newMessage = makePostEndpoint(MessageHistory, async (request, response) => {
     const message = request.body;
