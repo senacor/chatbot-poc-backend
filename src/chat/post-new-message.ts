@@ -42,7 +42,10 @@ export const newMessage = makePostEndpoint(MessageHistory, async (request, respo
     if (!identity) {
         return response.status(400).send(`Missing ${IDENTITY_HEADER} header.`)
     }
+    if (!getMessages(identity)) {
+        return response.status(404).send('Session not initialized');
+    }
     addMessage(identity, message);
-    const messages = getMessages(identity) ?? []; //TODO handle no messages
+    const messages = getMessages(identity) ?? [];
     return processMessages(messages, response, identity);
 });
