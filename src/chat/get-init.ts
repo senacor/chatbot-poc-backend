@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { makeGetEndpoint } from "../middleware/validation/makeGetEndpoint.js";
 import { fileReader, parseFileReaderResponse } from "../util/fileReader.js";
-import { IDENTITY_HEADER, OPENAI_MODEL, PROMPT_FILE_NAME, RESPONSE_FORMAT, openai } from "./index.js";
+import { IDENTITY_HEADER, PROMPT_FILE_NAME, RESPONSE_FORMAT } from "./index.js";
 import { addMessages, getUserVisibleMessages } from "../util/messageStore.js";
 
 //TODO: Rework type inference of fileReader
@@ -37,13 +37,6 @@ export const init = makeGetEndpoint(z.any(), async (_request, response) => {
             message: promptFile.error
         })
     }
-    
-    const completion = await openai.chat.completions.create({
-        messages: messages.map(message => ({role: "system", content: message})),
-        model: OPENAI_MODEL,
-        response_format: RESPONSE_FORMAT
-    });
-    console.log(completion.choices[0]?.message);
     addMessages(identity, [
         {
             role: "system", 
